@@ -280,7 +280,9 @@ export default function AuthPage() {
                     : "1.5px solid transparent",
                 color: tab === t ? "var(--gold)" : "var(--muted)",
                 background: "none",
-                border: "none",
+                borderTop: "none",
+                borderLeft: "none",
+                borderRight: "none",
                 borderBottom:
                   tab === t
                     ? "1.5px solid var(--gold)"
