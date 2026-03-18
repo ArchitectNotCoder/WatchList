@@ -82,7 +82,7 @@ export default function LogPage() {
     }
   };
 
-  const input = {
+  const input: React.CSSProperties = {
     width: "100%",
     background: "var(--bg2)",
     border: "0.5px solid var(--border)",
@@ -100,7 +100,7 @@ export default function LogPage() {
         fontSize: "0.55rem",
         fontWeight: 400,
         letterSpacing: "0.35em",
-        textTransform: "uppercase",
+        textTransform: "uppercase" as const,
         color: "var(--gold)",
         marginBottom: "1rem",
         display: "flex",
@@ -180,7 +180,6 @@ export default function LogPage() {
 
   return (
     <div style={{ maxWidth: 900, margin: "0 auto", padding: "3rem 2rem 5rem" }}>
-      {/* Header */}
       <div style={{ marginBottom: "3rem" }}>
         <p
           style={{
@@ -400,6 +399,7 @@ export default function LogPage() {
                     cursor: "pointer",
                     transition: "transform 0.15s",
                     transform: hoverRating >= n ? "scale(1.2)" : "scale(1)",
+                    padding: 0,
                   }}
                 >
                   <svg viewBox="0 0 24 24" width="22" height="22">
@@ -612,13 +612,7 @@ export default function LogPage() {
               <select
                 value={visibility}
                 onChange={(e) => setVisibility(e.target.value)}
-                style={
-                  {
-                    ...input,
-                    cursor: "pointer",
-                    WebkitAppearance: "none",
-                  } as any
-                }
+                style={{ ...input, cursor: "pointer" }}
                 onFocus={(e) => (e.target.style.borderColor = "var(--gold)")}
                 onBlur={(e) => (e.target.style.borderColor = "var(--border)")}
               >
@@ -631,15 +625,13 @@ export default function LogPage() {
         </div>
 
         {/* Preview */}
-        <div>
+        <div style={{ position: "sticky", top: 80 }}>
           <div
             style={{
               background: "var(--bg2)",
               border: "0.5px solid var(--border)",
               padding: "1.75rem",
-              position: "sticky",
-              top: 80,
-              position: "relative" as any,
+              position: "relative",
             }}
           >
             <div
@@ -765,7 +757,6 @@ export default function LogPage() {
                 cursor: selected ? "pointer" : "not-allowed",
                 marginTop: "1.5rem",
                 opacity: loading ? 0.7 : 1,
-                position: "relative",
               }}
             >
               {loading ? "Saving..." : "Add to WatchList"}
