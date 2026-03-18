@@ -66,18 +66,20 @@ export default function AuthPage() {
       setError(error.message);
       setLoading(false);
     } else {
-      // Update profile with username
       if (data.user) {
         await supabase
           .from("profiles")
-          .update({ username, full_name: `${firstName} ${lastName}` })
+          .update({
+            username,
+            full_name: `${firstName} ${lastName}`,
+          })
           .eq("id", data.user.id);
       }
       router.push("/feed");
     }
   };
 
-  const input = {
+  const input: React.CSSProperties = {
     width: "100%",
     background: "var(--bg2)",
     border: "0.5px solid var(--border)",
@@ -89,6 +91,24 @@ export default function AuthPage() {
     outline: "none",
   };
 
+  const tabStyle = (t: "signin" | "signup"): React.CSSProperties => ({
+    padding: "0.75rem 1.5rem",
+    fontSize: "0.6rem",
+    fontWeight: 400,
+    letterSpacing: "0.25em",
+    textTransform: "uppercase",
+    cursor: "pointer",
+    borderTop: "none",
+    borderLeft: "none",
+    borderRight: "none",
+    borderBottom:
+      tab === t ? "1.5px solid var(--gold)" : "1.5px solid transparent",
+    color: tab === t ? "var(--gold)" : "var(--muted)",
+    background: "none",
+    fontFamily: "var(--ff-body)",
+    transition: "color 0.2s",
+  });
+
   return (
     <div
       style={{
@@ -97,7 +117,7 @@ export default function AuthPage() {
         minHeight: "calc(100vh - 60px)",
       }}
     >
-      {/* LEFT */}
+      {/* LEFT PANEL */}
       <div
         style={{
           background: "var(--bg2)",
@@ -243,7 +263,7 @@ export default function AuthPage() {
         </div>
       </div>
 
-      {/* RIGHT */}
+      {/* RIGHT PANEL */}
       <div
         style={{
           display: "flex",
@@ -263,37 +283,12 @@ export default function AuthPage() {
             marginBottom: "2.5rem",
           }}
         >
-          {(["signin", "signup"] as const).map((t) => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              style={{
-                padding: "0.75rem 1.5rem",
-                fontSize: "0.6rem",
-                fontWeight: 400,
-                letterSpacing: "0.25em",
-                textTransform: "uppercase",
-                cursor: "pointer",
-                borderBottom:
-                  tab === t
-                    ? "1.5px solid var(--gold)"
-                    : "1.5px solid transparent",
-                color: tab === t ? "var(--gold)" : "var(--muted)",
-                background: "none",
-                borderTop: "none",
-                borderLeft: "none",
-                borderRight: "none",
-                borderBottom:
-                  tab === t
-                    ? "1.5px solid var(--gold)"
-                    : "1.5px solid transparent",
-                fontFamily: "var(--ff-body)",
-                transition: "color 0.2s",
-              }}
-            >
-              {t === "signin" ? "Sign In" : "Create Account"}
-            </button>
-          ))}
+          <button onClick={() => setTab("signin")} style={tabStyle("signin")}>
+            Sign In
+          </button>
+          <button onClick={() => setTab("signup")} style={tabStyle("signup")}>
+            Create Account
+          </button>
         </div>
 
         {error && (
@@ -309,7 +304,8 @@ export default function AuthPage() {
           </p>
         )}
 
-        {tab === "signin" ? (
+        {/* SIGN IN FORM */}
+        {tab === "signin" && (
           <form onSubmit={handleSignIn}>
             <div style={{ marginBottom: "1.25rem" }}>
               <label
@@ -383,7 +379,10 @@ export default function AuthPage() {
               {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
-        ) : (
+        )}
+
+        {/* SIGN UP FORM */}
+        {tab === "signup" && (
           <form onSubmit={handleSignUp}>
             <div
               style={{
@@ -556,6 +555,32 @@ export default function AuthPage() {
             >
               {loading ? "Joining..." : "Join the WatchList"}
             </button>
+            <p
+              style={{
+                fontSize: "0.6rem",
+                color: "var(--muted)",
+                lineHeight: 1.7,
+                marginTop: "1.5rem",
+                textAlign: "center",
+                letterSpacing: "0.05em",
+              }}
+            >
+              By joining you agree to our{" "}
+              <a
+                href="#"
+                style={{ color: "var(--muted)", textDecoration: "underline" }}
+              >
+                Terms
+              </a>{" "}
+              and{" "}
+              <a
+                href="#"
+                style={{ color: "var(--muted)", textDecoration: "underline" }}
+              >
+                Privacy Policy
+              </a>
+              .
+            </p>
           </form>
         )}
       </div>
